@@ -228,6 +228,10 @@ StateListenerRegistry.register(
                         features: { 'screen-sharing': true }
                     })),
                 'raisedHand': (participant, value) => _raiseHandUpdated(store, conference, participant.getId(), value),
+                'clapped': (participant, value) => _clapUpdated(store, conference, participant.getId(), value),
+                'whistled': (participant, value) => _whistleUpdated(store, conference, participant.getId(), value),
+                'laughed': (participant, value) => _laughUpdated(store, conference, participant.getId(), value),
+                'booed': (participant, value) => _booUpdated(store, conference, participant.getId(), value),
                 'remoteControlSessionStatus': (participant, value) =>
                     store.dispatch(participantUpdated({
                         conference,
@@ -261,6 +265,10 @@ StateListenerRegistry.register(
             // We left the conference, the local participant must be updated.
             _e2eeUpdated(store, conference, localParticipantId, false);
             _raiseHandUpdated(store, conference, localParticipantId, false);
+            _clapUpdated(store, conference, localParticipantId, false);
+            _whistleUpdated(store, conference, localParticipantId, false);
+            _laughUpdated(store, conference, localParticipantId, false);
+            _booUpdated(store, conference, localParticipantId, false);
         }
     }
 );
@@ -388,7 +396,7 @@ function _maybePlaySounds({ getState, dispatch }, action) {
  */
 function _participantJoinedOrUpdated(store, next, action) {
     const { dispatch, getState } = store;
-    const { participant: { avatarURL, email, id, local, name, raisedHand } } = action;
+    const { participant: { avatarURL, email, id, local, name, raisedHand, clapped, whistled, laughed, booed } } = action;
 
     // Send an external update of the local participant's raised hand state
     // if a new raised hand state is defined in the action.
@@ -399,6 +407,58 @@ function _participantJoinedOrUpdated(store, next, action) {
             // Send raisedHand signalling only if there is a change
             if (conference && raisedHand !== getLocalParticipant(getState()).raisedHand) {
                 conference.setLocalParticipantProperty('raisedHand', raisedHand);
+            }
+        }
+    }
+
+    // Send an external update of the local participant's clapped state
+    // if a new clapped state is defined in the action.
+    if (typeof clapped !== 'undefined') {
+        if (local) {
+            const { conference } = getState()['features/base/conference'];
+
+            // Send clapped signalling only if there is a change
+            if (conference && clapped !== getLocalParticipant(getState()).clapped) {
+                conference.setLocalParticipantProperty('clapped', clapped);
+            }
+        }
+    }
+
+    // Send an external update of the local participant's whistled state
+    // if a new whistled state is defined in the action.
+    if (typeof whistled !== 'undefined') {
+        if (local) {
+            const { conference } = getState()['features/base/conference'];
+
+            // Send whistled signalling only if there is a change
+            if (conference && whistled !== getLocalParticipant(getState()).whistled) {
+                conference.setLocalParticipantProperty('whistled', whistled);
+            }
+        }
+    }
+
+    // Send an external update of the local participant's laughed state
+    // if a new laughed state is defined in the action.
+    if (typeof laughed !== 'undefined') {
+        if (local) {
+            const { conference } = getState()['features/base/conference'];
+
+            // Send laughed signalling only if there is a change
+            if (conference && laughed !== getLocalParticipant(getState()).laughed) {
+                conference.setLocalParticipantProperty('laughed', laughed);
+            }
+        }
+    }
+
+    // Send an external update of the local participant's booed state
+    // if a new booed state is defined in the action.
+    if (typeof booed !== 'undefined') {
+        if (local) {
+            const { conference } = getState()['features/base/conference'];
+
+            // Send booed signalling only if there is a change
+            if (conference && booed !== getLocalParticipant(getState()).booed) {
+                conference.setLocalParticipantProperty('booed', booed);
             }
         }
     }
@@ -458,6 +518,134 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
                 name: getParticipantDisplayName(getState, participantId)
             },
             titleKey: 'notify.raisedHand'
+        }, NOTIFICATION_TIMEOUT));
+    }
+}
+
+/**
+ * Handles a clap status update.
+ *
+ * @param {Function} dispatch - The Redux dispatch function.
+ * @param {Object} conference - The conference for which we got an update.
+ * @param {string} participantId - The ID of the participant from which we got an update.
+ * @param {boolean} newValue - The new value of the clap status.
+ * @returns {void}
+ */
+function _clapUpdated({ dispatch, getState }, conference, participantId, newValue) {
+    const clapped = newValue === 'true';
+
+    dispatch(participantUpdated({
+        conference,
+        id: participantId,
+        clapped
+    }));
+
+    if (typeof APP !== 'undefined') {
+        APP.API.notifyClapUpdated(participantId, clapped);
+    }
+
+    if (clapped) {
+        dispatch(showNotification({
+            titleArguments: {
+                name: getParticipantDisplayName(getState, participantId)
+            },
+            titleKey: 'notify.clapped'
+        }, NOTIFICATION_TIMEOUT));
+    }
+}
+
+/**
+ * Handles a whistle status update.
+ *
+ * @param {Function} dispatch - The Redux dispatch function.
+ * @param {Object} conference - The conference for which we got an update.
+ * @param {string} participantId - The ID of the participant from which we got an update.
+ * @param {boolean} newValue - The new value of the whistle status.
+ * @returns {void}
+ */
+ function _whistleUpdated({ dispatch, getState }, conference, participantId, newValue) {
+    const whistled = newValue === 'true';
+
+    dispatch(participantUpdated({
+        conference,
+        id: participantId,
+        whistled
+    }));
+
+    if (typeof APP !== 'undefined') {
+        APP.API.notifyWhistleUpdated(participantId, whistled);
+    }
+
+    if (whistled) {
+        dispatch(showNotification({
+            titleArguments: {
+                name: getParticipantDisplayName(getState, participantId)
+            },
+            titleKey: 'notify.whistled'
+        }, NOTIFICATION_TIMEOUT));
+    }
+}
+
+/**
+ * Handles a laugh status update.
+ *
+ * @param {Function} dispatch - The Redux dispatch function.
+ * @param {Object} conference - The conference for which we got an update.
+ * @param {string} participantId - The ID of the participant from which we got an update.
+ * @param {boolean} newValue - The new value of the laugh status.
+ * @returns {void}
+ */
+ function _laughUpdated({ dispatch, getState }, conference, participantId, newValue) {
+    const laughed = newValue === 'true';
+
+    dispatch(participantUpdated({
+        conference,
+        id: participantId,
+        laughed
+    }));
+
+    if (typeof APP !== 'undefined') {
+        APP.API.notifyLaughUpdated(participantId, laughed);
+    }
+
+    if (laughed) {
+        dispatch(showNotification({
+            titleArguments: {
+                name: getParticipantDisplayName(getState, participantId)
+            },
+            titleKey: 'notify.laughed'
+        }, NOTIFICATION_TIMEOUT));
+    }
+}
+
+/**
+ * Handles a boo status update.
+ *
+ * @param {Function} dispatch - The Redux dispatch function.
+ * @param {Object} conference - The conference for which we got an update.
+ * @param {string} participantId - The ID of the participant from which we got an update.
+ * @param {boolean} newValue - The new value of the boo status.
+ * @returns {void}
+ */
+ function _booUpdated({ dispatch, getState }, conference, participantId, newValue) {
+    const booed = newValue === 'true';
+
+    dispatch(participantUpdated({
+        conference,
+        id: participantId,
+        booed
+    }));
+
+    if (typeof APP !== 'undefined') {
+        APP.API.notifyBooUpdated(participantId, booed);
+    }
+
+    if (booed) {
+        dispatch(showNotification({
+            titleArguments: {
+                name: getParticipantDisplayName(getState, participantId)
+            },
+            titleKey: 'notify.booed'
         }, NOTIFICATION_TIMEOUT));
     }
 }

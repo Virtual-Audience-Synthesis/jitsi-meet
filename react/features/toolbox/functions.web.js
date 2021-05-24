@@ -4,6 +4,10 @@ import { getToolbarButtons } from '../base/config';
 import { hasAvailableDevices } from '../base/devices';
 
 const WIDTH = {
+    FIT_13_ICONS: 720,
+    FIT_12_ICONS: 670,
+    FIT_11_ICONS: 620,
+    FIT_10_ICONS: 570,
     FIT_9_ICONS: 520,
     FIT_8_ICONS: 470,
     FIT_7_ICONS: 420,
@@ -23,6 +27,34 @@ export function getToolbarAdditionalButtons(width: number, isMobile: boolean): S
     let buttons = [];
 
     switch (true) {
+    case width >= WIDTH.FIT_13_ICONS: {
+        buttons = isMobile
+            ? [ 'chat', 'raisehand', 'clap', 'laugh', 'whistle', 'boo', 'tileview', 'participants-pane', 'overflow' ]
+            : [ 'desktop', 'chat', 'raisehand', 'clap', 'laugh', 'whistle', 'boo', 'tileview', 'participants-pane', 'overflow' ];
+        break;
+    }
+
+    case width >= WIDTH.FIT_12_ICONS: {
+        buttons = isMobile
+            ? [ 'chat', 'raisehand', 'clap', 'laugh', 'whistle', 'tileview', 'participants-pane', 'overflow' ]
+            : [ 'desktop', 'chat', 'raisehand', 'clap', 'laugh', 'whistle', 'tileview', 'participants-pane', 'overflow' ];
+        break;
+    }
+
+    case width >= WIDTH.FIT_11_ICONS: {
+        buttons = isMobile
+            ? [ 'chat', 'raisehand', 'clap', 'laugh', 'tileview', 'participants-pane', 'overflow' ]
+            : [ 'desktop', 'chat', 'raisehand', 'clap', 'laugh', 'tileview', 'participants-pane', 'overflow' ];
+        break;
+    }
+
+    case width >= WIDTH.FIT_10_ICONS: {
+        buttons = isMobile
+            ? [ 'chat', 'raisehand', 'clap', 'tileview', 'participants-pane', 'overflow' ]
+            : [ 'desktop', 'chat', 'raisehand', 'clap', 'tileview', 'participants-pane', 'overflow' ];
+        break;
+    }
+
     case width >= WIDTH.FIT_9_ICONS: {
         buttons = isMobile
             ? [ 'chat', 'raisehand', 'tileview', 'participants-pane', 'overflow' ]

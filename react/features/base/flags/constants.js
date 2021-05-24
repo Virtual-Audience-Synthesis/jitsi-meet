@@ -149,6 +149,30 @@ export const PIP_ENABLED = 'pip.enabled';
 export const RAISE_HAND_ENABLED = 'raise-hand.enabled';
 
 /**
+ * Flag indicating if clap feature should be enabled.
+ * Default: enabled.
+ */
+export const CLAP_ENABLED = 'clap.enabled';
+
+/**
+ * Flag indicating if whistle feature should be enabled.
+ * Default: enabled.
+ */
+export const WHISTLE_ENABLED = 'whistle.enabled';
+
+/**
+ * Flag indicating if laugh feature should be enabled.
+ * Default: enabled.
+ */
+export const LAUGH_ENABLED = 'laugh.enabled';
+
+/**
+ * Flag indicating if boo feature should be enabled.
+ * Default: enabled.
+ */
+export const BOO_ENABLED = 'boo.enabled';
+
+/**
  * Flag indicating if recording should be enabled.
  * Default: auto-detected.
  */

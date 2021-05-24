@@ -6,6 +6,10 @@ import { toState } from '../base/redux';
 import { isLocalVideoTrackDesktop } from '../base/tracks';
 
 const WIDTH = {
+    FIT_13_ICONS: 800,
+    FIT_12_ICONS: 740,
+    FIT_11_ICONS: 680,
+    FIT_10_ICONS: 620,
     FIT_9_ICONS: 560,
     FIT_8_ICONS: 500,
     FIT_7_ICONS: 440,
@@ -23,6 +27,22 @@ export function getMovableButtons(width: number): Set<string> {
     let buttons = [];
 
     switch (true) {
+    case width >= WIDTH.FIT_13_ICONS: {
+        buttons = [ 'togglecamera', 'chat', 'invite', 'raisehand', 'clap', 'laugh', 'whistle', 'boo', 'tileview' ];
+        break;
+    }
+    case width >= WIDTH.FIT_12_ICONS: {
+        buttons = [ 'togglecamera', 'chat', 'invite', 'raisehand', 'clap', 'laugh', 'whistle', 'tileview' ];
+        break;
+    }
+    case width >= WIDTH.FIT_11_ICONS: {
+        buttons = [ 'togglecamera', 'chat', 'invite', 'raisehand', 'clap', 'laugh', 'tileview' ];
+        break;
+    }
+    case width >= WIDTH.FIT_10_ICONS: {
+        buttons = [ 'togglecamera', 'chat', 'invite', 'raisehand', 'clap', 'tileview' ];
+        break;
+    }
     case width >= WIDTH.FIT_9_ICONS: {
         buttons = [ 'togglecamera', 'chat', 'invite', 'raisehand', 'tileview' ];
         break;

@@ -29,6 +29,11 @@ import ScreenSharingButton from './ScreenSharingButton.js';
 import ToggleCameraButton from './ToggleCameraButton';
 import styles from './styles';
 
+import ClapButton from './ClapButton';
+import WhistleButton from './WhistleButton';
+import LaughButton from './LaughButton';
+import BooButton from './BooButton';
+
 /**
  * The type of the React {@code Component} props of {@link OverflowMenu}.
  */
@@ -139,6 +144,10 @@ class OverflowMenu extends PureComponent<Props, State> {
                 {!toolbarButtons.has('invite') && <InviteButton { ...buttonProps } />}
                 <AudioOnlyButton { ...buttonProps } />
                 {!toolbarButtons.has('raisehand') && <RaiseHandButton { ...buttonProps } />}
+                {!toolbarButtons.has('clap') && <ClapButton { ...buttonProps } />}
+                {!toolbarButtons.has('whistle') && <WhistleButton { ...buttonProps } />}
+                {!toolbarButtons.has('laugh') && <LaughButton { ...buttonProps } />}
+                {!toolbarButtons.has('boo') && <BooButton { ...buttonProps } />}
                 <SecurityDialogButton { ...buttonProps } />
                 <ScreenSharingButton { ...buttonProps } />
                 <MoreOptionsButton { ...moreOptionsButtonProps } />

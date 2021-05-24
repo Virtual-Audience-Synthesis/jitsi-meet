@@ -381,7 +381,23 @@
 }
 
 .raisehandindicator {
-  background: $raiseHandBg;
+    background: $raiseHandBg;
+}
+
+.startclapindicator {
+    background: $startClapBg;
+}
+
+.startwhitleindicator {
+    background: $startWhistleBg;
+}
+
+.startlaughindicator {
+    background: $startLaughBg;
+}
+
+.startbooindicator {
+    background: $startBooBg;
 }
 
 .connection-indicator {

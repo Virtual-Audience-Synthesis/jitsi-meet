@@ -209,6 +209,78 @@ function initCommands() {
             );
         },
 
+        'toggle-clap': () => {
+            const localParticipant = getLocalParticipant(APP.store.getState());
+
+            if (!localParticipant) {
+                return;
+            }
+            const { clapped } = localParticipant;
+
+            sendAnalytics(createApiEvent('clap.toggled'));
+            APP.store.dispatch(
+                participantUpdated({
+                    id: APP.conference.getMyUserId(),
+                    local: true,
+                    clapped: !clapped
+                })
+            );
+        },
+
+        'toggle-whistle': () => {
+            const localParticipant = getLocalParticipant(APP.store.getState());
+
+            if (!localParticipant) {
+                return;
+            }
+            const { whistled } = localParticipant;
+
+            sendAnalytics(createApiEvent('whistle.toggled'));
+            APP.store.dispatch(
+                participantUpdated({
+                    id: APP.conference.getMyUserId(),
+                    local: true,
+                    whistled: !whistled
+                })
+            );
+        },
+
+        'toggle-laugh': () => {
+            const localParticipant = getLocalParticipant(APP.store.getState());
+
+            if (!localParticipant) {
+                return;
+            }
+            const { laughed } = localParticipant;
+
+            sendAnalytics(createApiEvent('laugh.toggled'));
+            APP.store.dispatch(
+                participantUpdated({
+                    id: APP.conference.getMyUserId(),
+                    local: true,
+                    laughed: !laughed
+                })
+            );
+        },
+
+        'toggle-boo': () => {
+            const localParticipant = getLocalParticipant(APP.store.getState());
+
+            if (!localParticipant) {
+                return;
+            }
+            const { booed } = localParticipant;
+
+            sendAnalytics(createApiEvent('boo.toggled'));
+            APP.store.dispatch(
+                participantUpdated({
+                    id: APP.conference.getMyUserId(),
+                    local: true,
+                    booed: !booed
+                })
+            );
+        },
+
         /**
          * Callback to invoke when the "toggle-share-screen" command is received.
          *
@@ -1164,6 +1236,66 @@ class API {
         this._sendEvent({
             name: 'raise-hand-updated',
             handRaised,
+            id
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that user updated their clapping.
+     *
+     * @param {string} id - User id.
+     * @param {boolean} clapped - Whether user has clapped.
+     * @returns {void}
+     */
+    notifyClapUpdated(id: string, clapped: boolean) {
+        this._sendEvent({
+            name: 'clap-updated',
+            clapped,
+            id
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that user updated their whistling.
+     *
+     * @param {string} id - User id.
+     * @param {boolean} whistled - Whether user has whistled.
+     * @returns {void}
+     */
+    notifyWhistleUpdated(id: string, whistled: boolean) {
+        this._sendEvent({
+            name: 'whistle-updated',
+            whistled,
+            id
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that user updated their laughing.
+     *
+     * @param {string} id - User id.
+     * @param {boolean} laughed - Whether user has laughed.
+     * @returns {void}
+     */
+    notifyLaughUpdated(id: string, laughed: boolean) {
+        this._sendEvent({
+            name: 'laugh-updated',
+            laughed,
+            id
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that user updated their booing.
+     *
+     * @param {string} id - User id.
+     * @param {boolean} booed - Whether user has booed.
+     * @returns {void}
+     */
+    notifyBooUpdated(id: string, booed: boolean) {
+        this._sendEvent({
+            name: 'boo-updated',
+            booed,
             id
         });
     }

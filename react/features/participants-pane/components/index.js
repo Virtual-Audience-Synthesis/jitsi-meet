@@ -7,3 +7,7 @@ export * from './MeetingParticipantList';
 export * from './ParticipantItem';
 export * from './ParticipantsPane';
 export * from './RaisedHandIndicator';
+export * from './StartedClapIndicator';
+export * from './StartedWhistleIndicator';
+export * from './StartedLaughIndicator';
+export * from './StartedBooIndicator';

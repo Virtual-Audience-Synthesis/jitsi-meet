@@ -19,6 +19,11 @@ import RaiseHandButton from './RaiseHandButton';
 import ToggleCameraButton from './ToggleCameraButton';
 import styles from './styles';
 
+import ClapButton from './ClapButton';
+import WhistleButton from './WhistleButton';
+import LaughButton from './LaughButton';
+import BooButton from './BooButton';
+
 /**
  * The type of {@link Toolbox}'s React {@code Component} props.
  */
@@ -90,6 +95,27 @@ function Toolbox(props: Props) {
                       && <RaiseHandButton
                           styles = { buttonStylesBorderless }
                           toggledStyles = { backgroundToggledStyle } />}
+
+                { additionalButtons.has('clap')
+                      && <ClapButton
+                          styles = { buttonStylesBorderless }
+                          toggledStyles = { backgroundToggledStyle } />}
+
+                { additionalButtons.has('whistle')
+                      && <WhistleButton
+                          styles = { buttonStylesBorderless }
+                          toggledStyles = { backgroundToggledStyle } />}
+
+                { additionalButtons.has('laugh')
+                      && <LaughButton
+                          styles = { buttonStylesBorderless }
+                          toggledStyles = { backgroundToggledStyle } />}
+
+                { additionalButtons.has('boo')
+                      && <BooButton
+                          styles = { buttonStylesBorderless }
+                          toggledStyles = { backgroundToggledStyle } />}
+
                 {additionalButtons.has('tileview') && <TileViewButton styles = { buttonStylesBorderless } />}
                 {additionalButtons.has('invite') && <InviteButton styles = { buttonStylesBorderless } />}
                 {additionalButtons.has('togglecamera')

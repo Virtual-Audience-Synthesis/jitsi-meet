@@ -24,7 +24,15 @@ import {
 } from '../../../base/tracks';
 import { ConnectionIndicator } from '../../../connection-indicator';
 import { DisplayName } from '../../../display-name';
-import { StatusIndicators, RaisedHandIndicator, DominantSpeakerIndicator } from '../../../filmstrip';
+import { 
+    StatusIndicators, 
+    RaisedHandIndicator, 
+    StartedClapIndicator, 
+    StartedWhistleIndicator, 
+    StartedLaughIndicator, 
+    StartedBooIndicator, 
+    DominantSpeakerIndicator 
+} from '../../../filmstrip';
 import { PresenceLabel } from '../../../presence-status';
 import { getCurrentLayout, LAYOUTS } from '../../../video-layout';
 import { LocalVideoMenuTriggerButton, RemoteVideoMenuTriggerButton } from '../../../video-menu';
@@ -621,6 +629,22 @@ class Thumbnail extends Component<Props, State> {
                         statsPopoverPosition = { statsPopoverPosition } />
                 }
                 <RaisedHandIndicator
+                    iconSize = { iconSize }
+                    participantId = { id }
+                    tooltipPosition = { tooltipPosition } />
+                <StartedClapIndicator
+                    iconSize = { iconSize }
+                    participantId = { id }
+                    tooltipPosition = { tooltipPosition } />
+                <StartedWhistleIndicator
+                    iconSize = { iconSize }
+                    participantId = { id }
+                    tooltipPosition = { tooltipPosition } />
+                <StartedLaughIndicator
+                    iconSize = { iconSize }
+                    participantId = { id }
+                    tooltipPosition = { tooltipPosition } />
+                <StartedBooIndicator
                     iconSize = { iconSize }
                     participantId = { id }
                     tooltipPosition = { tooltipPosition } />

@@ -314,6 +314,34 @@ export const RaisedHandIndicatorBackground = styled.div`
   width: 24px;
 `;
 
+export const StartedClapIndicatorBackground = styled.div`
+  background-color: #ed9e1b;
+  border-radius: 3px;
+  height: 24px;
+  width: 24px;
+`;
+
+export const StartedWhistleIndicatorBackground = styled.div`
+  background-color: #ed9e1b;
+  border-radius: 3px;
+  height: 24px;
+  width: 24px;
+`;
+
+export const StartedLaughIndicatorBackground = styled.div`
+  background-color: #ed9e1b;
+  border-radius: 3px;
+  height: 24px;
+  width: 24px;
+`;
+
+export const StartedBooIndicatorBackground = styled.div`
+  background-color: #ed9e1b;
+  border-radius: 3px;
+  height: 24px;
+  width: 24px;
+`;
+
 export const VolumeInput = styled.input.attrs({
     type: 'range'
 })`

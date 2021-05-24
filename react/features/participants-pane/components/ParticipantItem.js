@@ -16,6 +16,10 @@ import { getParticipantDisplayNameWithId } from '../../base/participants';
 import { ActionTrigger, MediaState } from '../constants';
 
 import { RaisedHandIndicator } from './RaisedHandIndicator';
+import { StartedClapIndicator } from './StartedClapIndicator';
+import { StartedWhistleIndicator } from './StartedWhistleIndicator';
+import { StartedLaughIndicator } from './StartedLaughIndicator';
+import { StartedBooIndicator } from './StartedBooIndicator';
 import {
     ParticipantActionsHover,
     ParticipantActionsPermanent,
@@ -154,6 +158,10 @@ export const ParticipantItem = ({
                 { !p.local && <ParticipantActions children = { children } /> }
                 <ParticipantStates>
                     {p.raisedHand && <RaisedHandIndicator />}
+                    {p.startedClap && <StartedClapIndicator />}
+                    {p.startedWhistle && <StartedWhistleIndicator />}
+                    {p.startedLaugh && <StartedLaughIndicator />}
+                    {p.startedBoo && <StartedBooIndicator />}
                     {VideoStateIcons[videoMuteState]}
                     {AudioStateIcons[audioMuteState]}
                 </ParticipantStates>

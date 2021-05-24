@@ -32,6 +32,11 @@ import ScreenShareIndicator from './ScreenShareIndicator';
 import VideoMutedIndicator from './VideoMutedIndicator';
 import styles, { AVATAR_SIZE } from './styles';
 
+import StartedClapIndicator from './StartedClapIndicator';
+import StartedWhistleIndicator from './StartedWhistleIndicator';
+import StartedLaughIndicator from './StartedLaughIndicator';
+import StartedBooIndicator from './StartedBooIndicator';
+
 /**
  * Thumbnail component's property types.
  */
@@ -174,6 +179,10 @@ function Thumbnail(props: Props) {
                     styles.thumbnailTopLeftIndicatorContainer
                 ] }>
                 <RaisedHandIndicator participantId = { participant.id } />
+                <StartedClapIndicator participantId = { participant.id } />
+                <StartedWhistleIndicator participantId = { participant.id } />
+                <StartedLaughIndicator participantId = { participant.id } />
+                <StartedBooIndicator participantId = { participant.id } />
                 { renderDominantSpeakerIndicator && <DominantSpeakerIndicator /> }
             </View> }
 

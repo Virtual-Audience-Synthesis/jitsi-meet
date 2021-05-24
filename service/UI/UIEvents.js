@@ -58,5 +58,25 @@ export default {
     /**
      * Notifies that the raise hand has been changed.
      */
-    LOCAL_RAISE_HAND_CHANGED: 'UI.local_raise_hand_changed'
+    LOCAL_RAISE_HAND_CHANGED: 'UI.local_raise_hand_changed',
+
+    /**
+     * Notifies that the clap has been changed.
+     */
+    LOCAL_CLAP_CHANGED: 'UI.local_clap_changed',
+
+    /**
+     * Notifies that the whistle has been changed.
+     */
+    LOCAL_WHISTLE_CHANGED: 'UI.local_whistle_changed',
+
+    /**
+     * Notifies that the laugh has been changed.
+     */
+    LOCAL_LAUGH_CHANGED: 'UI.local_laugh_changed',
+
+    /**
+     * Notifies that the boo has been changed.
+     */
+    LOCAL_BOO_CHANGED: 'UI.local_boo_changed',
 };

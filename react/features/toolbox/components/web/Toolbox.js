@@ -23,6 +23,10 @@ import {
     IconParticipants,
     IconPresentation,
     IconRaisedHand,
+    IconClapped,
+    IconWhistled,
+    IconLaughed,
+    IconBooed,
     IconRec,
     IconShareAudio,
     IconShareDesktop
@@ -194,6 +198,26 @@ type Props = {
     _raisedHand: boolean,
 
     /**
+     * Whether or not the local participant clapped.
+     */
+    _clapped: boolean,
+
+    /**
+     * Whether or not the local participant whistled.
+     */
+    _whistled: boolean,
+
+    /**
+     * Whether or not the local participant laughed.
+     */
+    _laughed: boolean,
+
+    /**
+     * Whether or not the local participant booed.
+     */
+    _booed: boolean,
+
+    /**
      * Whether or not the local participant is screensharing.
      */
     _screensharing: boolean,
@@ -256,6 +280,10 @@ class Toolbox extends Component<Props> {
         this._onShortcutToggleFullScreen = this._onShortcutToggleFullScreen.bind(this);
         this._onShortcutToggleParticipantsPane = this._onShortcutToggleParticipantsPane.bind(this);
         this._onShortcutToggleRaiseHand = this._onShortcutToggleRaiseHand.bind(this);
+        this._onShortcutToggleClap = this._onShortcutToggleClap.bind(this);
+        this._onShortcutToggleWhistle = this._onShortcutToggleWhistle.bind(this);
+        this._onShortcutToggleLaugh = this._onShortcutToggleLaugh.bind(this);
+        this._onShortcutToggleBoo = this._onShortcutToggleBoo.bind(this);
         this._onShortcutToggleScreenshare = this._onShortcutToggleScreenshare.bind(this);
         this._onShortcutToggleVideoQuality = this._onShortcutToggleVideoQuality.bind(this);
         this._onToolbarOpenFeedback = this._onToolbarOpenFeedback.bind(this);
@@ -268,6 +296,10 @@ class Toolbox extends Component<Props> {
         this._onToolbarToggleFullScreen = this._onToolbarToggleFullScreen.bind(this);
         this._onToolbarToggleProfile = this._onToolbarToggleProfile.bind(this);
         this._onToolbarToggleRaiseHand = this._onToolbarToggleRaiseHand.bind(this);
+        this._onToolbarToggleClap = this._onToolbarToggleClap.bind(this);
+        this._onToolbarToggleWhistle = this._onToolbarToggleWhistle.bind(this);
+        this._onToolbarToggleLaugh = this._onToolbarToggleLaugh.bind(this);
+        this._onToolbarToggleBoo = this._onToolbarToggleBoo.bind(this);
         this._onToolbarToggleScreenshare = this._onToolbarToggleScreenshare.bind(this);
         this._onToolbarToggleShareAudio = this._onToolbarToggleShareAudio.bind(this);
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
@@ -306,6 +338,26 @@ class Toolbox extends Component<Props> {
                 character: 'R',
                 exec: this._onShortcutToggleRaiseHand,
                 helpDescription: 'keyboardShortcuts.raiseHand'
+            },
+            this.props._shouldShowButton('clap') && {
+                character: 'U',
+                exec: this._onShortcutToggleClap,
+                helpDescription: 'keyboardShortcuts.clap'
+            },
+            this.props._shouldShowButton('whistle') && {
+                character: 'I',
+                exec: this._onShortcutToggleWhistle,
+                helpDescription: 'keyboardShortcuts.whistle'
+            },
+            this.props._shouldShowButton('laugh') && {
+                character: 'O',
+                exec: this._onShortcutToggleLaugh,
+                helpDescription: 'keyboardShortcuts.laugh'
+            },
+            this.props._shouldShowButton('boo') && {
+                character: 'P',
+                exec: this._onShortcutToggleBoo,
+                helpDescription: 'keyboardShortcuts.boo'
             },
             this.props._shouldShowButton('fullscreen') && {
                 character: 'S',
@@ -504,6 +556,106 @@ class Toolbox extends Component<Props> {
     }
 
     /**
+     * Dispatches an action to toggle the local participant's clapping state.
+     *
+     * @private
+     * @returns {void}
+     */
+    _doToggleClap() {
+        const { _localParticipantID, _clapped } = this.props;
+        const newClappedStatus = !_clapped;
+
+        this.props.dispatch(participantUpdated({
+            // XXX Only the local participant is allowed to update without
+            // stating the JitsiConference instance (i.e. participant property
+            // `conference` for a remote participant) because the local
+            // participant is uniquely identified by the very fact that there is
+            // only one local participant.
+
+            id: _localParticipantID,
+            local: true,
+            clapped: newClappedStatus
+        }));
+
+        APP.API.notifyClapUpdated(_localParticipantID, newClappedStatus);
+    }
+
+    /**
+     * Dispatches an action to toggle the local participant's whistling state.
+     *
+     * @private
+     * @returns {void}
+     */
+    _doToggleWhistle() {
+        const { _localParticipantID, _whistled } = this.props;
+        const newWhistledStatus = !_whistled;
+
+        this.props.dispatch(participantUpdated({
+            // XXX Only the local participant is allowed to update without
+            // stating the JitsiConference instance (i.e. participant property
+            // `conference` for a remote participant) because the local
+            // participant is uniquely identified by the very fact that there is
+            // only one local participant.
+
+            id: _localParticipantID,
+            local: true,
+            whistled: newWhistledStatus
+        }));
+
+        APP.API.notifyWhistleUpdated(_localParticipantID, newWhistledStatus);
+    }
+
+    /**
+     * Dispatches an action to toggle the local participant's laughing state.
+     *
+     * @private
+     * @returns {void}
+     */
+    _doToggleLaugh() {
+        const { _localParticipantID, _laughed } = this.props;
+        const newLaughedStatus = !_laughed;
+
+        this.props.dispatch(participantUpdated({
+            // XXX Only the local participant is allowed to update without
+            // stating the JitsiConference instance (i.e. participant property
+            // `conference` for a remote participant) because the local
+            // participant is uniquely identified by the very fact that there is
+            // only one local participant.
+
+            id: _localParticipantID,
+            local: true,
+            laughed: newLaughedStatus
+        }));
+
+        APP.API.notifyLaughUpdated(_localParticipantID, newLaughedStatus);
+    }
+
+    /**
+     * Dispatches an action to toggle the local participant's booing state.
+     *
+     * @private
+     * @returns {void}
+     */
+    _doToggleBoo() {
+        const { _localParticipantID, _booed } = this.props;
+        const newBooedStatus = !_booed;
+
+        this.props.dispatch(participantUpdated({
+            // XXX Only the local participant is allowed to update without
+            // stating the JitsiConference instance (i.e. participant property
+            // `conference` for a remote participant) because the local
+            // participant is uniquely identified by the very fact that there is
+            // only one local participant.
+
+            id: _localParticipantID,
+            local: true,
+            booed: newBooedStatus
+        }));
+
+        APP.API.notifyBooUpdated(_localParticipantID, newBooedStatus);
+    }
+
+    /**
      * Dispatches an action to toggle screensharing.
      *
      * @private
@@ -668,6 +820,14 @@ class Toolbox extends Component<Props> {
 
     _onShortcutToggleRaiseHand: () => void;
 
+    _onShortcutToggleClap: () => void;
+
+    _onShortcutToggleWhistle: () => void;
+
+    _onShortcutToggleLaugh: () => void;
+
+    _onShortcutToggleBoo: () => void;
+
     /**
      * Creates an analytics keyboard shortcut event and dispatches an action for
      * toggling raise hand.
@@ -682,6 +842,70 @@ class Toolbox extends Component<Props> {
             { enable: !this.props._raisedHand }));
 
         this._doToggleRaiseHand();
+    }
+
+    /**
+     * Creates an analytics keyboard shortcut event and dispatches an action for
+     * toggling clap.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onShortcutToggleClap() {
+        sendAnalytics(createShortcutEvent(
+            'toggle.clap',
+            ACTION_SHORTCUT_TRIGGERED,
+            { enable: !this.props._clapped }));
+
+        this._doToggleClap();
+    }
+
+    /**
+     * Creates an analytics keyboard shortcut event and dispatches an action for
+     * toggling whistle.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onShortcutToggleWhistle() {
+        sendAnalytics(createShortcutEvent(
+            'toggle.whistle',
+            ACTION_SHORTCUT_TRIGGERED,
+            { enable: !this.props._whistled }));
+
+        this._doToggleWhistle();
+    }
+
+    /**
+     * Creates an analytics keyboard shortcut event and dispatches an action for
+     * toggling laugh.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onShortcutToggleLaugh() {
+        sendAnalytics(createShortcutEvent(
+            'toggle.laugh',
+            ACTION_SHORTCUT_TRIGGERED,
+            { enable: !this.props._laughed }));
+
+        this._doToggleLaugh();
+    }
+
+    /**
+     * Creates an analytics keyboard shortcut event and dispatches an action for
+     * toggling boo.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onShortcutToggleBoo() {
+        sendAnalytics(createShortcutEvent(
+            'toggle.boo',
+            ACTION_SHORTCUT_TRIGGERED,
+            { enable: !this.props._booed }));
+
+        this._doToggleBoo();
     }
 
     _onShortcutToggleScreenshare: () => void;
@@ -866,6 +1090,14 @@ class Toolbox extends Component<Props> {
 
     _onToolbarToggleRaiseHand: () => void;
 
+    _onToolbarToggleClap: () => void;
+
+    _onToolbarToggleWhistle: () => void;
+    
+    _onToolbarToggleLaugh: () => void;
+
+    _onToolbarToggleBoo: () => void;
+
     /**
      * Creates an analytics toolbar event and dispatches an action for toggling
      * raise hand.
@@ -879,6 +1111,66 @@ class Toolbox extends Component<Props> {
             { enable: !this.props._raisedHand }));
 
         this._doToggleRaiseHand();
+    }
+
+    /**
+     * Creates an analytics toolbar event and dispatches an action for toggling
+     * clap.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onToolbarToggleClap() {
+        sendAnalytics(createToolbarEvent(
+            'clap',
+            { enable: !this.props._clapped }));
+
+        this._doToggleClap();
+    }
+
+    /**
+     * Creates an analytics toolbar event and dispatches an action for toggling
+     * whistle.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onToolbarToggleWhistle() {
+        sendAnalytics(createToolbarEvent(
+            'whistle',
+            { enable: !this.props._whistled }));
+
+        this._doToggleWhistle();
+    }
+
+    /**
+     * Creates an analytics toolbar event and dispatches an action for toggling
+     * laugh.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onToolbarToggleLaugh() {
+        sendAnalytics(createToolbarEvent(
+            'laugh',
+            { enable: !this.props._laughed }));
+
+        this._doToggleLaugh();
+    }
+
+    /**
+     * Creates an analytics toolbar event and dispatches an action for toggling
+     * boo.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onToolbarToggleBoo() {
+        sendAnalytics(createToolbarEvent(
+            'boo',
+            { enable: !this.props._booed }));
+
+        this._doToggleBoo();
     }
 
     _onToolbarToggleScreenshare: () => void;
@@ -1148,6 +1440,10 @@ class Toolbox extends Component<Props> {
             _desktopSharingEnabled,
             _desktopSharingDisabledTooltipKey,
             _raisedHand,
+            _clapped,
+            _whistled,
+            _laughed,
+            _booed,
             _screensharing,
             t
         } = this.props;
@@ -1211,6 +1507,74 @@ class Toolbox extends Component<Props> {
                     key = 'raisehand'
                     onClick = { this._onToolbarToggleRaiseHand }
                     text = { t(`toolbar.${_raisedHand ? 'lowerYourHand' : 'raiseYourHand'}`) } />);
+        }
+
+        if (this.props._shouldShowButton('clap')) {
+            buttons.has('clap')
+                ? mainMenuAdditionalButtons.push(<ToolbarButton
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.clap') }
+                    icon = { IconClapped }
+                    key = 'clap'
+                    onClick = { this._onToolbarToggleClap }
+                    toggled = { _clapped }
+                    tooltip = { t(`toolbar.${_clapped ? 'stopClapping' : 'startClapping'}`) } />)
+                : overflowMenuAdditionalButtons.push(<OverflowMenuItem
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.clap') }
+                    icon = { IconClapped }
+                    key = 'clap'
+                    onClick = { this._onToolbarToggleClap }
+                    text = { t(`toolbar.${_clapped ? 'stopClapping' : 'startClapping'}`) } />);
+        }
+
+        if (this.props._shouldShowButton('whistle')) {
+            buttons.has('whistle')
+                ? mainMenuAdditionalButtons.push(<ToolbarButton
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.whistle') }
+                    icon = { IconWhistled }
+                    key = 'whistle'
+                    onClick = { this._onToolbarToggleWhistle }
+                    toggled = { _whistled }
+                    tooltip = { t(`toolbar.${_whistled ? 'stopWhistling' : 'startWhistling'}`) } />)
+                : overflowMenuAdditionalButtons.push(<OverflowMenuItem
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.whistle') }
+                    icon = { IconWhistled }
+                    key = 'whistle'
+                    onClick = { this._onToolbarToggleWhistle }
+                    text = { t(`toolbar.${_whistled ? 'stopWhistling' : 'startWhistling'}`) } />);
+        }
+
+        if (this.props._shouldShowButton('laugh')) {
+            buttons.has('laugh')
+                ? mainMenuAdditionalButtons.push(<ToolbarButton
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.laugh') }
+                    icon = { IconLaughed }
+                    key = 'laugh'
+                    onClick = { this._onToolbarToggleLaugh }
+                    toggled = { _laughed }
+                    tooltip = { t(`toolbar.${_laughed ? 'stopLaughing' : 'startLaughing'}`) } />)
+                : overflowMenuAdditionalButtons.push(<OverflowMenuItem
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.laugh') }
+                    icon = { IconLaughed }
+                    key = 'laugh'
+                    onClick = { this._onToolbarToggleLaugh }
+                    text = { t(`toolbar.${_laughed ? 'stopLaughing' : 'startLaughing'}`) } />);
+        }
+
+        if (this.props._shouldShowButton('boo')) {
+            buttons.has('boo')
+                ? mainMenuAdditionalButtons.push(<ToolbarButton
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.boo') }
+                    icon = { IconBooed }
+                    key = 'boo'
+                    onClick = { this._onToolbarToggleBoo }
+                    toggled = { _booed }
+                    tooltip = { t(`toolbar.${_booed ? 'stopBooing' : 'startBooing'}`) } />)
+                : overflowMenuAdditionalButtons.push(<OverflowMenuItem
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.boo') }
+                    icon = { IconBooed }
+                    key = 'boo'
+                    onClick = { this._onToolbarToggleBoo }
+                    text = { t(`toolbar.${_booed ? 'stopBooing' : 'startBooing'}`) } />);
         }
 
         if (this.props._shouldShowButton('participants-pane') || this.props._shouldShowButton('invite')) {
@@ -1385,6 +1749,10 @@ function _mapStateToProps(state) {
         _overflowMenuVisible: overflowMenuVisible,
         _participantsPaneOpen: getParticipantsPaneOpen(state),
         _raisedHand: localParticipant.raisedHand,
+        _clapped: localParticipant.clapped,
+        _whistled: localParticipant.whistled,
+        _laughed: localParticipant.laughed,
+        _booed: localParticipant.booed,
         _screensharing: (localVideo && localVideo.videoType === 'desktop') || isScreenAudioShared(state),
         _shouldShowButton: buttonName => isToolbarButtonEnabled(buttonName)(state),
         _visible: isToolboxVisible(state),
