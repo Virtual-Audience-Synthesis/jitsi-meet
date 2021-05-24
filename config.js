@@ -454,7 +454,8 @@ var config = {
     //    'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
     //    'livestreaming', 'etherpad', 'sharedvideo', 'shareaudio', 'settings', 'raisehand',
     //    'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-    //    'tileview', 'select-background', 'download', 'help', 'mute-everyone', 'mute-video-everyone', 'security'
+    //    'tileview', 'select-background', 'download', 'help', 'mute-everyone', 'mute-video-everyone', 'security', 
+    //    'clap', 'whistle', 'laugh', 'boo'
     // ],
 
     // Stats
