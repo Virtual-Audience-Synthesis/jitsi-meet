@@ -12,7 +12,7 @@ import {
 } from '../conference';
 import { JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { MiddlewareRegistry, StateListenerRegistry } from '../redux';
-import { playSound, registerSound, unregisterSound } from '../sounds';
+import { playSound, stopSound, registerSound, unregisterSound } from '../sounds';
 
 import {
     DOMINANT_SPEAKER_CHANGED,
