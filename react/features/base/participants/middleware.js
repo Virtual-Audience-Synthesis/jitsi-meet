@@ -35,7 +35,13 @@ import {
 import {
     LOCAL_PARTICIPANT_DEFAULT_ID,
     PARTICIPANT_JOINED_SOUND_ID,
-    PARTICIPANT_LEFT_SOUND_ID
+    PARTICIPANT_LEFT_SOUND_ID,
+    CLAP_SOUND_IDS,
+    MALE_LAUGH_SOUND_IDS,
+    FEMALE_LAUGH_SOUND_IDS,
+    WHISTLE_SOUND_IDS,
+    MALE_BOO_SOUND_IDS,
+    FEMALE_BOO_SOUND_IDS
 } from './constants';
 import {
     getFirstLoadableAvatarUrl,
@@ -44,9 +50,20 @@ import {
     getParticipantCount,
     getParticipantDisplayName
 } from './functions';
-import { PARTICIPANT_JOINED_FILE, PARTICIPANT_LEFT_FILE } from './sounds';
+import { 
+    PARTICIPANT_JOINED_FILE, 
+    PARTICIPANT_LEFT_FILE,
+    CLAP_FILES,
+    MALE_LAUGH_FILES,
+    FEMALE_LAUGH_FILES,
+    WHISTLE_FILES,
+    MALE_BOO_FILES,
+    FEMALE_BOO_FILES
+} from './sounds';
 
 declare var APP: Object;
+const LAUGH_SOUND_IDS = [MALE_LAUGH_SOUND_IDS, FEMALE_LAUGH_SOUND_IDS];
+const BOO_SOUND_IDS = [MALE_BOO_SOUND_IDS, FEMALE_BOO_SOUND_IDS];
 
 /**
  * Middleware that captures CONFERENCE_JOINED and CONFERENCE_LEFT actions and
@@ -545,12 +562,19 @@ function _clapUpdated({ dispatch, getState }, conference, participantId, newValu
     }
 
     if (clapped) {
+        let clap_id = CLAP_SOUND_IDS[Math.floor(Math.random() * 5)];
+        dispatch(playSound(clap_id));
+
         dispatch(showNotification({
             titleArguments: {
                 name: getParticipantDisplayName(getState, participantId)
             },
             titleKey: 'notify.clapped'
         }, NOTIFICATION_TIMEOUT));
+    } else {
+        for (let clap_id of CLAP_SOUND_IDS) {
+            dispatch(stopSound(clap_id));
+        }
     }
 }
 
@@ -577,12 +601,19 @@ function _clapUpdated({ dispatch, getState }, conference, participantId, newValu
     }
 
     if (whistled) {
+        let whistle_id = WHISTLE_SOUND_IDS[Math.floor(Math.random() * 5)];
+        dispatch(playSound(whistle_id));
+
         dispatch(showNotification({
             titleArguments: {
                 name: getParticipantDisplayName(getState, participantId)
             },
             titleKey: 'notify.whistled'
         }, NOTIFICATION_TIMEOUT));
+    } else {
+        for (let whistle_id of WHISTLE_SOUND_IDS) {
+            dispatch(stopSound(whistle_id));
+        }
     }
 }
 
@@ -609,12 +640,21 @@ function _clapUpdated({ dispatch, getState }, conference, participantId, newValu
     }
 
     if (laughed) {
+        let laugh_id = LAUGH_SOUND_IDS[Math.floor(Math.random() * 2)][Math.floor(Math.random() * 5)];
+        dispatch(playSound(laugh_id));
+
         dispatch(showNotification({
             titleArguments: {
                 name: getParticipantDisplayName(getState, participantId)
             },
             titleKey: 'notify.laughed'
         }, NOTIFICATION_TIMEOUT));
+    } else {
+        for (let laugh_sound_id_list of LAUGH_SOUND_IDS) {
+            for (let laugh_id of laugh_sound_id_list) {
+                dispatch(stopSound(laugh_id));
+            }
+        }
     }
 }
 
@@ -641,12 +681,21 @@ function _clapUpdated({ dispatch, getState }, conference, participantId, newValu
     }
 
     if (booed) {
+        let boo_id = BOO_SOUND_IDS[Math.floor(Math.random() * 2)][Math.floor(Math.random() * 5)];
+        dispatch(playSound(boo_id));
+
         dispatch(showNotification({
             titleArguments: {
                 name: getParticipantDisplayName(getState, participantId)
             },
             titleKey: 'notify.booed'
         }, NOTIFICATION_TIMEOUT));
+    } else {
+        for (let boo_sound_id_list of BOO_SOUND_IDS) {
+            for (let boo_id of boo_sound_id_list) {
+                dispatch(stopSound(boo_id));
+            }
+        }
     }
 }
 
@@ -661,6 +710,30 @@ function _registerSounds({ dispatch }) {
     dispatch(
         registerSound(PARTICIPANT_JOINED_SOUND_ID, PARTICIPANT_JOINED_FILE));
     dispatch(registerSound(PARTICIPANT_LEFT_SOUND_ID, PARTICIPANT_LEFT_FILE));
+
+    for (let i = 0; i < CLAP_SOUND_IDS.length; i++) {
+        dispatch(registerSound(CLAP_SOUND_IDS[i], CLAP_FILES[i]));
+    }
+
+    for (let i = 0; i < MALE_LAUGH_SOUND_IDS.length; i++) {
+        dispatch(registerSound(MALE_LAUGH_SOUND_IDS[i], MALE_LAUGH_FILES[i]));
+    }
+
+    for (let i = 0; i < FEMALE_LAUGH_SOUND_IDS.length; i++) {
+        dispatch(registerSound(FEMALE_LAUGH_SOUND_IDS[i], FEMALE_LAUGH_FILES[i]));
+    }
+
+    for (let i = 0; i < WHISTLE_SOUND_IDS.length; i++) {
+        dispatch(registerSound(WHISTLE_SOUND_IDS[i], WHISTLE_FILES[i]));
+    }
+
+    for (let i = 0; i < MALE_BOO_SOUND_IDS.length; i++) {
+        dispatch(registerSound(MALE_BOO_SOUND_IDS[i], MALE_BOO_FILES[i]));
+    }
+
+    for (let i = 0; i < FEMALE_BOO_SOUND_IDS.length; i++) {
+        dispatch(registerSound(FEMALE_BOO_SOUND_IDS[i], FEMALE_BOO_FILES[i]));
+    }
 }
 
 /**
@@ -673,4 +746,28 @@ function _registerSounds({ dispatch }) {
 function _unregisterSounds({ dispatch }) {
     dispatch(unregisterSound(PARTICIPANT_JOINED_SOUND_ID));
     dispatch(unregisterSound(PARTICIPANT_LEFT_SOUND_ID));
+    
+    for (let i = 0; i < CLAP_SOUND_IDS.length; i++) {
+        dispatch(unregisterSound(CLAP_SOUND_IDS[i], CLAP_FILES[i]));
+    }
+
+    for (let i = 0; i < MALE_LAUGH_SOUND_IDS.length; i++) {
+        dispatch(unregisterSound(MALE_LAUGH_SOUND_IDS[i], MALE_LAUGH_FILES[i]));
+    }
+
+    for (let i = 0; i < FEMALE_LAUGH_SOUND_IDS.length; i++) {
+        dispatch(unregisterSound(FEMALE_LAUGH_SOUND_IDS[i], FEMALE_LAUGH_FILES[i]));
+    }
+
+    for (let i = 0; i < WHISTLE_SOUND_IDS.length; i++) {
+        dispatch(unregisterSound(WHISTLE_SOUND_IDS[i], WHISTLE_FILES[i]));
+    }
+
+    for (let i = 0; i < MALE_BOO_SOUND_IDS.length; i++) {
+        dispatch(unregisterSound(MALE_BOO_SOUND_IDS[i], MALE_BOO_FILES[i]));
+    }
+
+    for (let i = 0; i < FEMALE_BOO_SOUND_IDS.length; i++) {
+        dispatch(unregisterSound(FEMALE_BOO_SOUND_IDS[i], FEMALE_BOO_FILES[i]));
+    }
 }
